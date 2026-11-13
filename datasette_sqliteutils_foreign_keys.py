@@ -114,7 +114,8 @@ command_e = ['sqlite-utils', 'insert', 'franklin_ledgers_all.db',
 command_list = [command_a, command_b, command_c, command_d, command_e]
 
 for i in command_list:
-    subprocess.run(i, shell=True)
+    print(i)
+    subprocess.run(i)
 
 # set primary key for name index
 # label is detected automatically if there is an obvious name
