@@ -158,8 +158,8 @@ search_command = ['sqlite-utils', 'enable-fts', 'franklin_ledgers_all.db',
 name_search = ['sqlite-utils', 'enable-fts', 'franklin_ledgers_all.db',
     'people', 'standardized_name', 'variant_names']
 
-subprocess.run(search_command, shell=True)
-subprocess.run(name_search, shell=True)
+subprocess.run(search_command)
+subprocess.run(name_search)
 
 indexer_a = ['sqlite-utils', 'create-index', 'franklin_ledgers_all.db',
     'all_transactions', 'place', 'occupation', 'transaction_type',
