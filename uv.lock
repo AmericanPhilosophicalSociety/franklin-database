@@ -108,6 +108,18 @@ wheels = [
 ]
 
 [[package]]
+name = "datasette-search-all"
+version = "1.1.4"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "datasette" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/33/3d/2111599e89583f9415b8e1e89f4b57f2dd41833f95ab023ea54157c9e636/datasette_search_all-1.1.4.tar.gz", hash = "sha256:371de80eff4f2f0e5ba70cc8efcdd68c1089ebf03d743febced250012d678911", size = 10885, upload-time = "2024-09-06T03:11:56.932Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/1f/57/3d7535970622b175527e1fc270db0c193df8008ab56c2b8e628a373cdafe/datasette_search_all-1.1.4-py3-none-any.whl", hash = "sha256:8590099131899f5cb9d51d90a857ed3a828a5d8e2003fd3f0f5939a1a6bc7a8d", size = 10640, upload-time = "2024-09-06T03:11:55.455Z" },
+]
+
+[[package]]
 name = "flexcache"
 version = "0.3"
 source = { registry = "https://pypi.org/simple" }
@@ -137,12 +149,14 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "datasette" },
+    { name = "datasette-search-all" },
     { name = "sqlite-utils" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "datasette", specifier = ">=0.65.5" },
+    { name = "datasette-search-all", specifier = ">=1.1.4" },
     { name = "sqlite-utils", specifier = ">=4.2.1" },
 ]
 
