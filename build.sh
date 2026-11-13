@@ -1,0 +1,1 @@
+python datasette_sqliteutils_foreign_keys.py
