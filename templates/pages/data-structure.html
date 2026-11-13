@@ -1,6 +1,63 @@
-{% extends "base.html "%}
+<!--
+	Polymorph by Pixelarity
+	pixelarity.com | hello@pixelarity.com
+	License: pixelarity.com/license
+-->
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Franklin Ledgers Database</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CD2X5VV4CJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-{% block content %}
+  gtag('config', 'G-CD2X5VV4CJ');
+</script>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  {% for url in extra_css_urls %}
+      <link rel="stylesheet" href="{{ url.url }}"{% if url.sri %} integrity="{{ url.sri }}" crossorigin="anonymous"{% endif %}>
+  {% endfor %}
+  {% for url in extra_js_urls %}
+    <script {% if url.module %}type="module" {% endif %}src="{{ url.url }}"{% if url.sri %} integrity="{{ url.sri }}" crossorigin="anonymous"{% endif %}></script>
+  {% endfor %}
+  {%- if alternate_url_json -%}
+    <link rel="alternate" type="application/json+datasette" href="{{ alternate_url_json }}">
+  {%- endif -%}
+</head>
+
+<body class="is-preload">
+  <div id="wrapper">
+      <header id="header">
+          <div id="logo" style="line-height: 0;">
+            <span class="image" style="border-image-width:0px;"><a href="http://www.amphilsoc.org" target="_blank" style="border-bottom:none 0px;"><img src="{{ urls.instance( )}}static/images/banner-1.jpg"></a></span>
+          </div>
+          <nav id="nav">
+            <ul>
+              <li><a href="{{ urls.instance() }}">Home</a></li>
+              <li>
+								<div class='dropdown'>
+									<a href='{{ urls.instance() }}franklin_ledgers_all'>TABLES</a>
+              	<div class='dropdown-content'>
+									<ul>
+                    <li><a href="{{ urls.instance() }}franklin_ledgers_all/all_transactions">All Transactions</a></li>
+										<li><a href="{{ urls.instance() }}franklin_ledgers_all/goods_services">Goods and Services</a></li>
+										<li><a href="{{ urls.instance() }}franklin_ledgers_all/people">People</a></li>
+										<li><a href="{{ urls.instance() }}franklin_ledgers_all/postal_locations">Postal Locations</a></li>
+              		</ul>
+								</div>
+								</div>
+              </li>
+            </ul>
+          </nav>
+      </header>
+      <div id="main">
+
+        <section class="main">
+<!--Here is the original material-->
 <div class="inner">
 	<header class="major">
   	<span class="category">Franklin Ledgers: A Searchable Database</span>
@@ -8,6 +65,7 @@
 	</header>
   	<p>This page provides a detailed explanation of the data structure of the database, the sources for the data, and an explanation of assumptions made during the construction of the dataset.</p>
 		<p>This database is the end result of a multi-year initiative by the American Philosophical Society's <a href="https://www.amphilsoc.org/center-digital-scholarship">Center for Digital Scholarship</a> and provides a single point of access to six separate datasets. The database therefore serves as a powerful tool for gaining insight into Benjamin Franklin's financial records and activities as Philadelphia's Postmaster of Philadelphia. However, the datasets that make up this database reflect the information structure of the individual manuscripts from which they are drawn. Information recorded in one ledger may be absent or recorded differently in another. This documentation provides useful indications for the limitations in the data and how best to make use of the database.</p>
+		<p>The account books in this database include both daybooks and ledgers. Daybooks, like Ledger A and the Shop Book, were used to record transactions on a day-by-day basis. This information was then periodically transferred to a ledger, like Ledger D, which served as the official record of the shop's business. When using this database, it is important to note that many transactions are duplicated as they may appear in both a daybook and a ledger. This means caution is advised when making financial calculations based on the database.</p>
 		<p>This database was built using <a href="https://datasette.io/">Datasette</a>.
 		<div class="row gtr-uniform gtr-150 justify-content-between">
 			<ul class="actions special">
@@ -25,7 +83,7 @@
 
 	<ul class="column-descriptions">
 	        <li><input id="accordion1" type="checkbox" /><label for="accordion1">rowid</label>
-						<div>A sequential number assigned to each row in the database. Each row represents a single item in a single transaction.</div>
+						<div>A sequential number assigned to each row in the database. Each row represents a single item or lot in a single transaction.</div>
 					</li>
 					<li><input id="accordion2" type="checkbox" /><label for="accordion2">transaction_id</label>
 						<div>
@@ -45,7 +103,7 @@
 					<li><input id="accordion3" type="checkbox" /><label for="accordion3">date</label>
 						<div>
 							<p>The date associated with the transaction. The date is transcribed from the ledger and may be incomplete. When parts of the date do not appear in the ledger (e.g. "May 1740"), question marks are used to indicate the missing data (e.g. 1740-05-??).</p>
-							<p>Years are standardized to the Gregorian Calendar. In the ledgers, January 1 through March 25 are commonly notated using Old Style Dating or both styles. The nature of spreadsheets does not allow for both dating styles.</p>
+							<p>Years are standardized to the Gregorian Calendar. In the ledgers, January 1 through March 25 are commonly notated using <a href="https://en.wikipedia.org/wiki/Old_Style_and_New_Style_dates" target="_blank">Old Style Dating</a> or both Old and New Styles. This complexity is not reflected in the data structure.</p>
 							<p>The Franklins and the other account keepers often did not note a change in month. A jump in day, for example from the 31st to the 8th, is assumed to indicate a new month.</p>
 							<p>Bear in mind that ambiguities in dates (e.g. missing parts of the date, uncertain transcriptions) may interfere with the database's automatic sort feature. These discrepancies should be reconciled on a case-by-case basis.</p>
 						</div>
@@ -55,7 +113,7 @@
 							<p>A unique identifier for each person that appears in the dataset. This index is based on the <a href="https://udspace.udel.edu/handle/19716/2360" target="_blank">work of Leo Lemay</a>.</p>
 							<p>Each Lemay ID consists of the first letter of the subject's last name, plus a 4 digit number. A standardized name is provided for convenience. The standardized name is generally the most complete version of the person's name that appears in the ledger.</p>
 							<p>Note that Lemay IDs are primarily a navigational aid to help identify entries with similar names. While care has been taken to disambiguate names as much as possible, it cannot be guaranteed that all entries under one Lemay ID actually refer to the same person. Likewise, it is possible that multiple IDs may refer to the same person.</p>
-							<p>To search for a specific individual's transactions, initiate the query from the <a href="{{ urls.instance() }}franklin_ledgers_all/lemay_ids">lemay_ids table</a> by clicking on the relevant Lemay ID.</p>
+							<p>To search for a specific individual's transactions, initiate the query from the <a href="{{ urls.instance() }}franklin_ledgers_all/people">People table</a> by clicking on the relevant Lemay ID.</p>
 						</div>
 					</li>
 					<li><input id="accordion5" type="checkbox" /><label for="accordion5">transaction_type</label>
@@ -84,20 +142,20 @@
 					<li><input id="accordion7" type="checkbox" /><label for="accordion7">controlled_description</label>
 						<div>
 							<p> A broad controlled description of the activity record. This category groups transactions into broad descriptions of goods and services exchanged to facilitate sorting and filtering transactions.</p>
-							<p>To search for all transactions falling under a specific controlled description, initiate the query from the <a href="{{ urls.instance() }}franklin_ledgers_all/transaction_categories">transaction_categories table</a> by clicking on the relevant category.</p>
+							<p>To search for all transactions falling under a specific controlled description, initiate the query from the <a href="{{ urls.instance() }}franklin_ledgers_all/goods_services">Goods and Services table</a> by clicking on the relevant category.</p>
 						</div>
 					</li>
 					<li><input id="accordion8" type="checkbox" /><label for="accordion8">narrow_description</label>
 						<div>
 							<p>A narrow controlled description of the activity record. Narrow descriptions provide a precise description of the goods and services exchanged (e.g. the book purchased or the type of print job requested). Narrow descriptions allow the user to search for specific goods and services exchanged in standardized orthography.</p>
 							<p>Because narrow descriptions describe the exact good or service exchanged, any given narrow description may not appear more than a handful of times in the database. For this reason, they have not been provided as hyperlinks in the database. To search for all records of a particular narrow description, use the advanced search feature. Set the column to "narrow_description," use the "=" operator and copy the narrow description into the input box. </p>
-							<p>If this field is blank, it indicates no further specification of the transaction was deemed necessary.</p>
+							<p>If this field is blank, it indicates no further specification of the transaction was deemed possible or necessary.</p>
 							<p>No narrow description is provided for the postal ledgers. To sort postal ledgers into narrow transaction types, use the "transaction_type" field.</p>
 						</div>
 					</li>
 					<li><input id="accordion9" type="checkbox" /><label for="accordion9">pounds/shillings/pence</label>
 						<div>
-							<p>A transcription of the pounds, shillings or pence due for the transaction. The field is blank if none of a specific denomination was recorded. Occasionally, more than 20 shillings are noted, but these have not been converted to pounds.</p>
+							<p>A transcription of the pounds, shillings or pence due for the transaction. In most cases, this data has been regularized for computation. The field is blank if none of a specific denomination was recorded. Occasionally, more than 20 shillings are noted, but these have not been converted to pounds.</p>
 							<p>Transactions have been itemized into individual goods and services. To avoid duplication, fields relating to the cost of a transaction are only provided for the first item in a transaction. If all price information is blank in a particular row, this likely indicates that you are viewing a second or third item in a larger itemized transaction. To view the whole transaction and the transcriptions associated with it, click on the link in the "transaction_id" category. Since the money listed covers the whole transaction, it is not necessarily possible to determine the value of a single item in a transaction.</p>
 							<p>Due to limitations in the tool used to build this database, it is not possible to sort entries completely by cost; however, the data can easily be exported and loaded into another tool. To do this, use the "Advanced Export" feature below the table.</p>
 						</div>
@@ -112,7 +170,7 @@
 					<li><input id="accordion11" type="checkbox" /><label for="accordion11">post_location</label>
 						<div>
 							<p>The location associated with a postal transaction. Locations have been standardized to facilitate discovery.</p>
-							<p>To search for a specific postal location, initiate the query from the <a href="{{ urls.instance() }}franklin_ledgers_all/postal_locations">postal_locations table</a> by clicking on the relevant location.</p>
+							<p>To search for a specific postal location, initiate the query from the <a href="{{ urls.instance() }}franklin_ledgers_all/postal_locations">Postal Locations table</a> by clicking on the relevant location.</p>
 							<p>The following standardization schema was used:</p>
 							<p>NYork = New York (city) Boyd’s Hole = Boyd’s Hole, VA Amboy = Perth Amboy, NJ New Port = New Port/Newport, Rhode Island York Town = Yorktown, Virginia (Yorktown, New York wasn’t named until the 1780s) Brunswick = New Brunswick, New Jersey (along the King’s Highway) Burlington = Burlington, NJ (along the King’s Highway) N London = New London, CT (along the Lower Post Road) Way = Letters received along the way between Post-Offices</p>
 							<p>Note that way letters are grouped together; therefore, the location on the page is not indicative of point of origin.</p>
@@ -135,7 +193,7 @@
 					</li>
 					<li><input id="accordion16" type="checkbox" /><label for="accordion16">transaction_entered_by</label>
 						<div>
-							Who entered the transaction into the ledger. The letter "B" indicates Benjamin Franklin entered the transaction, while "D" indicates Deborah Franklin. A handful of transactions, labeled "M," were entered by a male store clerk. These data are only available for Ledgers A & B and the Shop Book. The person who entered the transaction was identified both by the unique characteristics of the person's hand as well as the peculiarities of Deborah Franklin's orthography.
+							Who entered the transaction into the ledger. The letter "B" indicates Benjamin Franklin entered the transaction, while "D" indicates Deborah Franklin. A handful of transactions, labeled "M," were entered by one or perhaps several unidentified store clerks. These data are only available for Ledgers A & B and the Shop Book. The person who entered the transaction was identified both by the unique characteristics of the person's handwriting as well as the peculiarities of Deborah Franklin's orthography.
 						</div>
 					</li>
 					<li><input id="accordion17" type="checkbox" /><label for="accordion17">source</label>
@@ -146,7 +204,7 @@
 					<li><input id="accordion18" type="checkbox" /><label for="accordion18">page_number</label>
 						<div>
 								<p>The digital page number on which the transaction appears. Note that this number corresponds to the object in the APS Digital Library. Pencil page numbers in the margins do not always parallel the digital page number.</p>
-								<p>Note that page numbers are not unique to a manuscript. To view all the transactions on one page of a given manuscript, select "transaction_id" in the advanced search feature. Then, select the "starts with" operator and put the beginning of the desired transaction ID in the input field. Apply the query, and then run a second search, selecting "page" in the advanced search feature.</p>
+								<p>Note that page numbers are not unique to a manuscript. To view all the transactions on one page of a given manuscript, select "source" in the advanced search feature. Then, select the "=" operator and put the name of the ledger exactly as it appears in the database. Apply the query, and then run a second search, selecting "page" in the advanced search feature.</p>
 							</div>
 					</li>
 					<li><input id="accordion19" type="checkbox" /><label for="accordion19">url</label>
@@ -179,4 +237,37 @@
 		<p>Gender is assigned based on the person's name and may not correspond to how the person would have identified.</p>
 		<p>Measurements of currency ("Amount due" columns) are likely listed in Philadelphia's local currency rate (which was based on an item's weight). Although also measured in pounds, shillings (abbreviated d.), and pence (abbreviated p.), Philadelphia's currency was not equivalent in value to British Pounds Sterling. Robert Siegel Auction Galleries suggested a 167% inflation factor to convert Pounds Sterling into Philadelphia currency (see <a href="https://siegelauctions.com/2007/944/944.pdf">Siegel Auction Galleries, page 172</a>). Additionally, prior to 1971, monetary amounts in Great Britain were calculated differently than they are today, so care must be taken with calculations in converting contemporary values to their equivalent modern ones. Prior to that time, £1 = 20s. = 240d.</p>
 </div>
-{% endblock %}
+        </section>
+
+      <footer id="footer">
+        <div class="inner">
+          <section>
+            <h2>About the American Philosophical Society</h2>
+            <p>An eminent scholarly organization of international reputation, the <a href="http://amphilsoc.org" target="_blank">American Philosophical Society</a> promotes useful knowledge in the sciences and humanities through excellence in scholarly research, professional meetings, support of young scholars, publications, library resources, a museum, and community outreach.</p>
+            <ul class="icons style2">
+              <li><a href="https://twitter.com/AmPhilSociety" class="icon style2 fa-twitter" target="_blank"><span class="label">Twitter</span></a></li>
+              <li><a href="https://www.facebook.com/americanphilosophicalsociety" class="icon fa-facebook" target="_blank"><span class="label">Facebook</span></a></li>
+              <li><a href="https://www.instagram.com/amphilsociety/" class="icon fa-instagram" target="_blank"><span class="label">Instagram</span></a></li>
+              <li><a href="https://github.com/AmericanPhilosophicalSociety/" class="icon fa-github" target="_blank"><span class="label">GitHub</span></a></li>
+            </ul>
+            <p>American Philosophical Society | Site Version 1.0 | October 18, 2023.</p>
+          </section>
+
+        </div>
+
+      </footer>
+
+
+
+
+
+  </div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<!--<script src="{{ urls.instance( )}}static/js/jquery.min.js"></script>-->
+	<script src="{{ urls.instance( )}}static/js/browser.min.js"></script>
+	<script src="{{ urls.instance( )}}static/js/breakpoints.min.js"></script>
+	<script src="{{ urls.instance( )}}static/js/util.js"></script>
+	<script src="{{ urls.instance( )}}static/js/main.js"></script>
+</body>
+</html>
+
