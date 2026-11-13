@@ -1,0 +1,91 @@
+<!--
+	Polymorph by Pixelarity
+	pixelarity.com | hello@pixelarity.com
+	License: pixelarity.com/license
+-->
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Franklin Ledgers Database</title>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async="yes" src="https://www.googletagmanager.com/gtag/js?id=UA-5674777-5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-5674777-5');
+  </script>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  {% for url in extra_css_urls %}
+      <link rel="stylesheet" href="{{ url.url }}"{% if url.sri %} integrity="{{ url.sri }}" crossorigin="anonymous"{% endif %}>
+  {% endfor %}
+  {% for url in extra_js_urls %}
+    <script {% if url.module %}type="module" {% endif %}src="{{ url.url }}"{% if url.sri %} integrity="{{ url.sri }}" crossorigin="anonymous"{% endif %}></script>
+  {% endfor %}
+  {%- if alternate_url_json -%}
+    <link rel="alternate" type="application/json+datasette" href="{{ alternate_url_json }}">
+  {%- endif -%}
+</head>
+
+<body class="is-preload">
+  <div id="wrapper">
+      <header id="header">
+          <div id="logo" style="line-height: 0;">
+            <span class="image" style="border-image-width:0px;"><a href="http://www.amphilsoc.org" target="_blank" style="border-bottom:none 0px;"><img src="{{ urls.instance( )}}static/images/banner-1.jpg"></a></span>
+          </div>
+          <nav id="nav">
+            <ul>
+              <li><a href="{{ urls.instance() }}">Home</a></li>
+              <li>
+                <a href="#" class="dropdown">Tables</a>
+								<ul>
+                  <li><a href="franklin_ledgers_all/all_transactions">all_transactions</a></li>
+                  <li><a href="franklin_ledgers_all/lemay_ids">lemay_ids</a></li>
+                  <li><a href="franklin_ledgers_all/postal_locations">postal_locations</a></li>
+									<li><a href="franklin_ledgers_all/transaction_categories">transaction_categories</a></li>
+                </ul>
+              </li>
+            </ul>
+          </nav>
+      </header>
+      <div id="main">
+
+        <section class="main">
+          {% block content %}
+          {% endblock %}
+        </section>
+
+      <footer id="footer">
+        <div class="inner">
+          <section>
+            <h2>About the American Philosophical Society</h2>
+            <p>An eminent scholarly organization of international reputation, the <a href="http://amphilsoc.org" target="_blank">American Philosophical Society</a> promotes useful knowledge in the sciences and humanities through excellence in scholarly research, professional meetings, support of young scholars, publications, library resources, a museum, and community outreach.</p>
+            <ul class="icons style2">
+              <li><a href="https://twitter.com/AmPhilSociety" class="icon style2 fa-twitter" target="_blank"><span class="label">Twitter</span></a></li>
+              <li><a href="https://www.facebook.com/americanphilosophicalsociety" class="icon fa-facebook" target="_blank"><span class="label">Facebook</span></a></li>
+              <li><a href="https://www.instagram.com/amphilsociety/" class="icon fa-instagram" target="_blank"><span class="label">Instagram</span></a></li>
+              <li><a href="#" class="icon fa-github" target="_blank"><span class="label">GitHub</span></a></li>
+            </ul>
+            <p>&copy; American Philosophical Society 2019.</p>
+          </section>
+
+        </div>
+
+      </footer>
+
+
+
+
+
+  </div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<!--<script src="{{ urls.instance( )}}static/js/jquery.min.js"></script>-->
+	<script src="{{ urls.instance( )}}static/js/jquery.dropotron.min.js"></script>
+	<script src="{{ urls.instance( )}}static/js/browser.min.js"></script>
+	<script src="{{ urls.instance( )}}static/js/breakpoints.min.js"></script>
+	<script src="{{ urls.instance( )}}static/js/util.js"></script>
+	<script src="{{ urls.instance( )}}static/js/main.js"></script>
+</body>
+</html>

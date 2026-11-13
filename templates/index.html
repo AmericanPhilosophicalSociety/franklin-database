@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="inner">
+  <header class="major">
+    <span class="category">Franklin's Philadelphia Ledgers Project</span>
+    <h2>The Franklin Ledgers Database</h2>
+  </header>
+  <div class="box" style="background-color: lightgray">
+    {% if metadata.description_html or metadata.description %}
+      <div class="metadata-description">
+        {% if metadata.description_html %}
+          {{ metadata.description_html|safe }}
+        {% else %}
+          {{ metadata.description }}
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="row gtr-uniform gtr-150 justify-content-between">
+    <ul class="actions special">
+        <li><a href="{{ urls.instance() }}franklin_ledgers_all" class="button primary large" style="font-size: 1em;">Access the Database</a></li>
+        <li><a href="{{ urls.instance() }}data-structure" class="button primary large" style="font-size: 1em;">Read the Documentation</a></li>
+    </ul>
+
+  </div>
+</div>
+{% endblock %}

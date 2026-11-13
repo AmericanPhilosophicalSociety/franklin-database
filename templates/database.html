@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="inner">
+  <header class="major">
+    <span class="category">Franklin Ledgers: A Searchable Database</span>
+    <h2>Access the Database</h2>
+  </header>
+    <p>To perform a general search, use the keyword search below.</p>
+    <p>For an advanced search, start your query from one of the tables below.</p>
+
+    <h3>Keyword search</h3>
+    <form action="{{ urls.path("/-/search") }}" method="get">
+      <p>
+        <input id="_search" type="search" name="q" value="{{ q }}" placeholder="Search the ledgers" id="search-all-q">
+        <input type="submit" value="Search">
+      </p>
+    </form>
+
+  {% if tables %}
+    <h2 id="tables">Tables</h2>
+  {% endif %}
+
+  {% for table in tables %}
+    {% if show_hidden or not table.hidden %}
+      <div class="db-table">
+        <h3><a href="{{ urls.table(database, table.name) }}">{{ metadata['tables'][table.name]['title'] }}</a>{% if table.private %} 🔒{% endif %}{% if table.hidden %}<em> (hidden)</em>{% endif %}</h3>
+        {{ metadata['tables'][table.name]['description_html']|safe }}
+        <p><em>{% if table.count is none %}Many rows{% else %}{{ "{:,}".format(table.count) }} row{% if table.count == 1 %}{% else %}s{% endif %}{% endif %}</em></p>
+      </div>
+    {% endif %}
+  {% endfor %}
+
+
+  {% if allow_download %}
+    <p class="download-sqlite">Download SQLite DB: <a href="{{ urls.database(database) }}.db">{{ database }}.db</a> <em>{{ format_bytes(size) }}</em></p>
+  {% endif %}
+
+  {% if queries %}
+    <h2 id="queries">Queries</h2>
+    <ul class="bullets">
+        {% for query in queries %}
+            <li><a href="{{ urls.query(database, query.name) }}{% if query.fragment %}#{{ query.fragment }}{% endif %}" title="{{ query.description or query.sql }}">{{ query.title or query.name }}</a>{% if query.private %} 🔒{% endif %}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+  {% include "_codemirror_foot.html" %}
+
+</div>
+{% endblock %}

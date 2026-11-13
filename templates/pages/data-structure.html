@@ -1,0 +1,182 @@
+{% extends "base.html "%}
+
+{% block content %}
+<div class="inner">
+	<header class="major">
+  	<span class="category">Franklin Ledgers: A Searchable Database</span>
+  	<h2>Data Structure and Explanation of Terms</h2>
+	</header>
+  	<p>This page provides a detailed explanation of the data structure of the database, the sources for the data, and an explanation of assumptions made during the construction of the dataset.</p>
+		<p>This database is the end result of a multi-year initiative by the American Philosophical Society's <a href="https://www.amphilsoc.org/center-digital-scholarship">Center for Digital Scholarship</a> and provides a single point of access to six separate datasets. The database therefore serves as a powerful tool for gaining insight into Benjamin Franklin's financial records and activities as Philadelphia's Postmaster of Philadelphia. However, the datasets that make up this database reflect the information structure of the individual manuscripts from which they are drawn. Information recorded in one ledger may be absent or recorded differently in another. This documentation provides useful indications for the limitations in the data and how best to make use of the database.</p>
+		<p>This database was built using <a href="https://datasette.io/">Datasette</a>.
+		<div class="row gtr-uniform gtr-150 justify-content-between">
+			<ul class="actions special">
+				<li><a href="#structure" class="button primary large" style="font-size: 1em;">Data Structure</a></li>
+				<li></li>
+				<li><a href="#sources" class="button primary large" style="font-size: 1em;">Data Sources</a></li>
+				<li></li>
+				<li><a href="#assumptions" class="button primary large" style="font-size: 1em;">Assumptions</a></li>
+			</ul>
+		</div>
+	<span id="structure"></span>
+	<h2>Data Structure</h2>
+
+	<p>Click on a term below for a detailed description of its usage in the database.</p>
+
+	<ul class="column-descriptions">
+	        <li><input id="accordion1" type="checkbox" /><label for="accordion1">rowid</label>
+						<div>A sequential number assigned to each row in the database. Each row represents a single item in a single transaction.</div>
+					</li>
+					<li><input id="accordion2" type="checkbox" /><label for="accordion2">transaction_id</label>
+						<div>
+							<p> A unique identifier assigned to each transaction. Note that transactions have been itemized and may constitute multiple rows. The transaction ID can be used to display all items under one transaction. Transaction IDs are assigned in the following way: </p>
+								<ul class="accordion-list">
+									<li> "TNinLAB" indicates a transaction in <a href="https://diglib.amphilsoc.org/islandora/object/compound:72">Ledgers A and B, 1730-1740</a>.</li>
+									<li> "TNinLD" indicates a transaction in <a href="https://diglib.amphilsoc.org/islandora/object/compound:71">Ledger D, 1739-1748</a>.</li>
+									<li> "TNinSB" indicates a transaction in the <a href="https://diglib.amphilsoc.org/islandora/object/compound:73">Shop Book, 1737-1739</a>.</li>
+									<li> "TNinPOB08" indicates a transaction in the <a href="https://diglib.amphilsoc.org/islandora/object/compound:11">Post Office Book, 1748-1752</a>.</li>
+									<li> "TNinPOB11b" indicates a transaction in the <a href="https://diglib.amphilsoc.org/islandora/compound/philadelphia-post-office-ledger-no2-1742-1753">Philadelphia [Post Office Ledger, No. 2], 1742-1753</a>.</li>
+									<li> "TNinPOB12" indicates a transaction in <a href="https://diglib.amphilsoc.org/islandora/object/post-office-accounts-may-18-1748">Post Office Accounts, May 18, 1748</a>.</li>
+									<li> The number at the end of each transaction ID is assigned sequentially for each manuscript and corresponds to the transaction's order in the manuscript.</li>
+								</ul>
+								<p>To avoid duplicating price and quantity information, transcriptions in the "activity," "pounds," "shillings," "pence" and "line_total" fields are only provided for the first item in a transaction. To view the whole transaction, click on the link in the "transaction_id" field. Alternatively, use the "Advanced Search" feature and select "transaction_id." Use the "=" operator and copy the transaction ID into the input field.</p>
+							</div>
+					</li>
+					<li><input id="accordion3" type="checkbox" /><label for="accordion3">date</label>
+						<div>
+							<p>The date associated with the transaction. The date is transcribed from the ledger and may be incomplete. When parts of the date do not appear in the ledger (e.g. "May 1740"), question marks are used to indicate the missing data (e.g. 1740-05-??).</p>
+							<p>Years are standardized to the Gregorian Calendar. In the ledgers, January 1 through March 25 are commonly notated using Old Style Dating or both styles. The nature of spreadsheets does not allow for both dating styles.</p>
+							<p>The Franklins and the other account keepers often did not note a change in month. A jump in day, for example from the 31st to the 8th, is assumed to indicate a new month.</p>
+							<p>Bear in mind that ambiguities in dates (e.g. missing parts of the date, uncertain transcriptions) may interfere with the database's automatic sort feature. These discrepancies should be reconciled on a case-by-case basis.</p>
+						</div>
+					</li>
+					<li><input id="accordion4" type="checkbox" /><label for="accordion4">lemay_index</label>
+						<div>
+							<p>A unique identifier for each person that appears in the dataset. This index is based on the <a href="https://udspace.udel.edu/handle/19716/2360" target="_blank">work of Leo Lemay</a>.</p>
+							<p>Each Lemay ID consists of the first letter of the subject's last name, plus a 4 digit number. A standardized name is provided for convenience. The standardized name is generally the most complete version of the person's name that appears in the ledger.</p>
+							<p>Note that Lemay IDs are primarily a navigational aid to help identify entries with similar names. While care has been taken to disambiguate names as much as possible, it cannot be guaranteed that all entries under one Lemay ID actually refer to the same person. Likewise, it is possible that multiple IDs may refer to the same person.</p>
+							<p>To search for a specific individual's transactions, initiate the query from the <a href="{{ urls.instance() }}franklin_ledgers_all/lemay_ids">lemay_ids table</a> by clicking on the relevant Lemay ID.</p>
+						</div>
+					</li>
+					<li><input id="accordion5" type="checkbox" /><label for="accordion5">transaction_type</label>
+						<div>
+							<p>A broad description of the transaction. Transactions are described as:</p>
+								<ul class="accordion-list">
+									<li>Dr: A debit on the individual's account. It means that someone purchased something but did not pay at the moment of the transaction by cash or bartering.</li>
+									<li>Cr: A payment (often partial) of the account. Payments were made in cash and through bartering. The return of a borrowed item is also referred to as a credit.</li>
+									<li>Memo: A catchall term for notations about things coming into the shop or transactions that are not debits or credits.</li>
+									<li>Incoming Post Charge: Amount of money due for incoming post.</li>
+									<li>Outgoing Post Charge: Amount of money due for outgoing post.</li>
+									<li>Free Letter: Instead of listing a charge the letter was marked "Free."* </li>
+									<li>Paid Letter: Instead if listing a charge the letter was marked "Paid."*</li>
+									<li>Post Charge Forwarded to Location: Letter marked forwarded to another location.</li>
+								</ul>
+							<p>*Letters marked “free” or “paid” are either official correspondence approved beforehand, or correspondence from or to a postmaster, a system known as <a href="https://en.wikipedia.org/wiki/Franking#Franking_privilege>" target="_blank">franking</a>.</p>	
+							</div>
+					</li>
+					<li><input id="accordion6" type="checkbox" /><label for="accordion6">activity</label>
+						<div>
+							<p>A transcription of the record of the transaction as it appears in the ledger. The activity line contains the record of what goods and services were exchanged, and in what quantities.</p>
+							<p>Transactions have been itemized into individual goods and services. To avoid duplication, the "activity" field is only provided for the first item in a transaction. If the activity field is blank in a particular row, this likely indicates that you are viewing a second or third item in a larger itemized transaction. To view the whole transaction and the transcriptions associated with it, click on the link in the "transaction_id" category.</p>
+							<p>No "activity" record is provided for the postal ledgers due to the structure of those manuscripts.</p>
+						</div>
+					</li>
+					<li><input id="accordion7" type="checkbox" /><label for="accordion7">controlled_description</label>
+						<div>
+							<p> A broad controlled description of the activity record. This category groups transactions into broad descriptions of goods and services exchanged to facilitate sorting and filtering transactions.</p>
+							<p>To search for all transactions falling under a specific controlled description, initiate the query from the <a href="{{ urls.instance() }}franklin_ledgers_all/transaction_categories">transaction_categories table</a> by clicking on the relevant category.</p>
+						</div>
+					</li>
+					<li><input id="accordion8" type="checkbox" /><label for="accordion8">narrow_description</label>
+						<div>
+							<p>A narrow controlled description of the activity record. Narrow descriptions provide a precise description of the goods and services exchanged (e.g. the book purchased or the type of print job requested). Narrow descriptions allow the user to search for specific goods and services exchanged in standardized orthography.</p>
+							<p>Because narrow descriptions describe the exact good or service exchanged, any given narrow description may not appear more than a handful of times in the database. For this reason, they have not been provided as hyperlinks in the database. To search for all records of a particular narrow description, use the advanced search feature. Set the column to "narrow_description," use the "=" operator and copy the narrow description into the input box. </p>
+							<p>If this field is blank, it indicates no further specification of the transaction was deemed necessary.</p>
+							<p>No narrow description is provided for the postal ledgers. To sort postal ledgers into narrow transaction types, use the "transaction_type" field.</p>
+						</div>
+					</li>
+					<li><input id="accordion9" type="checkbox" /><label for="accordion9">pounds/shillings/pence</label>
+						<div>
+							<p>A transcription of the pounds, shillings or pence due for the transaction. The field is blank if none of a specific denomination was recorded. Occasionally, more than 20 shillings are noted, but these have not been converted to pounds.</p>
+							<p>Transactions have been itemized into individual goods and services. To avoid duplication, fields relating to the cost of a transaction are only provided for the first item in a transaction. If all price information is blank in a particular row, this likely indicates that you are viewing a second or third item in a larger itemized transaction. To view the whole transaction and the transcriptions associated with it, click on the link in the "transaction_id" category. Since the money listed covers the whole transaction, it is not necessarily possible to determine the value of a single item in a transaction.</p>
+							<p>Due to limitations in the tool used to build this database, it is not possible to sort entries completely by cost; however, the data can easily be exported and loaded into another tool. To do this, use the "Advanced Export" feature below the table.</p>
+						</div>
+					</li>
+					<li><input id="accordion10" type="checkbox" /><label for="accordion10">line_total</label>
+						<div>
+							<p>The sum of all the transactions on a line as written in the ledgers. For the account books, it should not be used to calculate totals for a day or account holder as the line totals are occasionally incorrect. It should be used to orient the reader when comparing to the digital object.</p>
+							<p>For the postal ledgers, the line total is computationally derived from the pounds, shillings and pence fields and does give an accurate total.</p>
+							<p>Due to limitations in the database structure, line totals are not parsed as numbers by the database and therefore cannot be used to sort transactions by cost using the "Advaned Search" feature. Use the "pounds" or "shillings" fields instead for a rough estimate.</p>
+						</div>
+					</li>
+					<li><input id="accordion11" type="checkbox" /><label for="accordion11">post_location</label>
+						<div>
+							<p>The location associated with a postal transaction. Locations have been standardized to facilitate discovery.</p>
+							<p>To search for a specific postal location, initiate the query from the <a href="{{ urls.instance() }}franklin_ledgers_all/postal_locations">postal_locations table</a> by clicking on the relevant location.</p>
+							<p>The following standardization schema was used:</p>
+							<p>NYork = New York (city) Boyd’s Hole = Boyd’s Hole, VA Amboy = Perth Amboy, NJ New Port = New Port/Newport, Rhode Island York Town = Yorktown, Virginia (Yorktown, New York wasn’t named until the 1780s) Brunswick = New Brunswick, New Jersey (along the King’s Highway) Burlington = Burlington, NJ (along the King’s Highway) N London = New London, CT (along the Lower Post Road) Way = Letters received along the way between Post-Offices</p>
+							<p>Note that way letters are grouped together; therefore, the location on the page is not indicative of point of origin.</p>
+						</div>
+					</li>
+					<li><input id="accordion12" type="checkbox" /><label for="accordion12">post_weight</label>
+						<div>
+							<p>The weight recorded in a postal transaction. All measurements of weight appear in pennyweight (abbreviated Dwt.) and grains (abbreviated Grs.). This unit of mass ("Troy weight") was commonly used in Great Britain until 1878. One dwt. is equal to 24 grs.</p>
+							<p>Due to limitations in the tool used to build this database, sorting by weight will often produce unpredictable results. A more accurate sort can be achieved using the advanced <a href='https://www.sqlite.org/lang_expr.html#cast_expressions'>SQLite expression CAST</a>.</p>
+						</div>
+					</li>
+					<li><input id="accordion13" type="checkbox" /><label for="accordion13">gazette_no</label>
+						<div>Gazette advertisements most often included the number in which they were supposed to be published. This information is included in the activity, but also included in this column.</div>
+					</li>
+					<li><input id="accordion14" type="checkbox" /><label for="accordion14">notes</label>
+						<div>Any notes that are written in the marginalia attached to the particular transaction.</div>
+					</li>
+					<li><input id="accordion15" type="checkbox" /><label for="accordion15">gender</label>
+						<div>The assumed gender of the person in the transaction. Gender is extrapolated from the person's name and therefore does not necessarily represent how that person may have identified.</div>
+					</li>
+					<li><input id="accordion16" type="checkbox" /><label for="accordion16">transaction_entered_by</label>
+						<div>
+							Who entered the transaction into the ledger. The letter "B" indicates Benjamin Franklin entered the transaction, while "D" indicates Deborah Franklin. A handful of transactions, labeled "M," were entered by a male store clerk. These data are only available for Ledgers A & B and the Shop Book. The person who entered the transaction was identified both by the unique characteristics of the person's hand as well as the peculiarities of Deborah Franklin's orthography.
+						</div>
+					</li>
+					<li><input id="accordion17" type="checkbox" /><label for="accordion17">source</label>
+						<div>
+							The manuscript volume the transaction was entered in. More complete information about these sources is available further down on this page.
+						</div>
+					</li>
+					<li><input id="accordion18" type="checkbox" /><label for="accordion18">page_number</label>
+						<div>
+								<p>The digital page number on which the transaction appears. Note that this number corresponds to the object in the APS Digital Library. Pencil page numbers in the margins do not always parallel the digital page number.</p>
+								<p>Note that page numbers are not unique to a manuscript. To view all the transactions on one page of a given manuscript, select "transaction_id" in the advanced search feature. Then, select the "starts with" operator and put the beginning of the desired transaction ID in the input field. Apply the query, and then run a second search, selecting "page" in the advanced search feature.</p>
+							</div>
+					</li>
+					<li><input id="accordion19" type="checkbox" /><label for="accordion19">url</label>
+						<div>The URL that leads to a digitization of the page on which the transaction appears in the APS Digital Library.</div>
+					</li>
+					<li><input id="accordion20" type="checkbox" /><label for="accordion20">transcriber_notes</label>
+						<div>Any notes, comments or questions the transcriber notated during the transcription process.</div>
+					</li>
+	</ul>
+	<span id="sources"></span>
+	<h2>Data Sources</h2>
+	<p>The database comprises six individual datasets, each drawn from an individual manuscript.</p>
+		<dl>
+			<dt><a href="https://diglib.amphilsoc.org/islandora/object/compound:72">Ledgers A & B, 1730-1740</a></dt>
+			<dd>This is the earliest known surviving Franklin account book. It was kept by Franklin and his wife, Deborah, and very few entries are in other hands. Paper was expensive and ruled books were especially dear: therefore, Franklin used the last half of this volume for Ledger B. "Leidger A" (Journal) is the front half of the book and the entries are records of sales, purchases, printing expenses, bills, etc., under the date of the transaction, and then they were posted under the name of the customer in "Leidger B" (Ledger). Beginning with page 169 the Ledger entries follow, recording individual customers' accounts. There is an eight page index which precedes this Ledger and Franklin, by November 1736 had used all of the pages in the back of the book, so he then used the blank pages between the Journal and the Ledger, and numbered the pages from front to back. Franklin noted that he had cancelled all of the accounts by March 5, 1757, that were either "settled or not like to be recovered." Some of these were "Carried to Ledger E."</dd>
+			<dt><a href="https://diglib.amphilsoc.org/islandora/object/compound:73">Shop Book, 1737-1739</a></dt>
+			<dd>This volume contains the same kind of entries as "Leidger A" (Journal) and most of the entries herein were made by Deborah Franklin. Since these entries overlap with those in "Leidger A" (Journal), it is sensible to assume that the entries were made in whichever volume proved more convenient at the time, with Franklin more likely to use the Journal and his wife the Shop Book. Most entries appear under date of transaction. From the Shop Book and "Leidgers A & B" a good picture of Franklin's business activities emerges. His printing ventures, goods sold over the counter in the shop and items for his business use or resale give an insight to the struggles to get ahead in the world, for he sold everything from ink and quills to printed legal forms and books.</dd>
+			<dt><a href="https://diglib.amphilsoc.org/islandora/object/compound:71">Ledger D, 1739-1748</a></dt>
+			<dd>This large (ca. 400 page) volume contains entries for credit sales but few payments, for legal forms, paper, ink, quills, etc., much like Ledgers A and B. Also, it contains records of dealings with many public officials of Philadelphia and the governors of Pennsylvania, Delaware and New Jersey.</dd>
+			<dt><a href="https://diglib.amphilsoc.org/islandora/compound/philadelphia-post-office-ledger-no2-1742-1753">Philadelphia [Post Office Ledger, No. 2], 1742-1753</a></dt>
+			<dd>The balances due Franklin from unpaid postage in "Leidger No. 1" are entered here and many people owed Franklin money. Some of the accounts are marked "Paid" and some have a line drawn through them, possibly indicating "Paid." Such outstanding entries due Franklin were entered in "Ledger E." This Post Office Ledger, No. 2, is a large ledger of ca. 325 pages.</dd>
+			<dt><a href="https://diglib.amphilsoc.org/islandora/object/post-office-accounts-may-18-1748">Post Office Accounts, May 18, 1748</a></dt>
+			<dd>"Post Office Accounts" May 18, 1748, is the continuation of the above ledger [Philadelphia Post Office Record Book No. 3, B F85f6.11c]. It contains 68 unnumbered pages. Per the Franklin Papers (vol. II, p. 180-181), "the amounts owed by each [name-entry] correspond[s] to the subtotals entered in May 1748 in the ledger described above as No. 2 [B F85f6.11b, Philadelphia Post Office Ledger, No.2]."</dd>
+			<dt><a href="https://diglib.amphilsoc.org/islandora/object/compound:11">Post Office Book, 1748-1752</a></dt>
+			<dd>This volume of 372 pages records receipt and dispatch of all mail in the Philadelphia Post Office between May 25, 1748 and July 23, 1752. Deliveries into the Post Office from out of town were listed, letter by letter, by the names of the addressees, weight and amount due, paid or free. Outgoing mail was simply listed by number of sheets and weight, not by individual letters.</dd>
+		</dl>
+	<span id="assumptions"></span>
+	<h2>Assumptions</h2>
+		<p>Dittos (Do.) are silently corrected and assumed to refer to the information in the above row.</p>
+		<p>Gender is assigned based on the person's name and may not correspond to how the person would have identified.</p>
+		<p>Measurements of currency ("Amount due" columns) are likely listed in Philadelphia's local currency rate (which was based on an item's weight). Although also measured in pounds, shillings (abbreviated d.), and pence (abbreviated p.), Philadelphia's currency was not equivalent in value to British Pounds Sterling. Robert Siegel Auction Galleries suggested a 167% inflation factor to convert Pounds Sterling into Philadelphia currency (see <a href="https://siegelauctions.com/2007/944/944.pdf">Siegel Auction Galleries, page 172</a>). Additionally, prior to 1971, monetary amounts in Great Britain were calculated differently than they are today, so care must be taken with calculations in converting contemporary values to their equivalent modern ones. Prior to that time, £1 = 20s. = 240d.</p>
+</div>
+{% endblock %}

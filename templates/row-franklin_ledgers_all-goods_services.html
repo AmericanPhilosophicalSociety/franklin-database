@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>The Franklin Ledgers Database</title>
+      {% if foreign_key_tables %}
+        {% for other in foreign_key_tables %}
+          <meta http-equiv = "refresh" content = "0; url = {{ other.link }}" />
+        {% endfor %}
+      {% endif %}
+   </head>
+</html>

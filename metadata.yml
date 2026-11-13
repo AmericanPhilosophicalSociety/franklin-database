@@ -1,0 +1,147 @@
+title: Franklin Ledgers #title that appears at the top of the page.
+description_html: |- #description that appears on main page. Can use HTML.
+  <p>The APS houses many of Benjamin Franklin's ledgers which document the period of his life when he was building his business alongside his wife Deborah Read Franklin and when he became Postmaster in Philadelphia. The ledgers contain a wealth of information about the Franklins and the lives of many other 18th-century Philadelphians. The Franklin's Philadelphia Ledgers Project digitized and transcribed these valuable account books. Now, for the first time, this database provides a single point of access to Franklin's ledgers.</p>
+  <p>By using this database, users may access financial records that cover the activities of the Franklins' shop from roughly 1730 to 1748, and postal records from roughly 1742 to 1752.</p>
+  <p>Use the links below to access the database and to learn more about the underlying data.</p>
+  <p>This database was built using <a href="https://datasette.io/" target="_blank" ref="noopener noreferrer">Datasette</a>.</p>
+source: American Philosophical Society #appears on main page and footer
+source_url: http://www.amphilsoc.org
+license: CC BY 4.0 #appears on main page and footer
+license_url: https://creativecommons.org/licenses/by/4.0/
+about: A database for the Franklins' ledgers. #appears on main page and footer. Can also use attribute "about_url"
+databases: #use to specify metadata for specific tables/databases
+  franklin_ledgers_all:
+    tables:
+      all_transactions:
+        title: All Transactions
+        description_html: |-
+          <p>The "all_transactions" table provides a complete record of the six ledgers included in the database. Most general queries should begin here.</p>
+        searchmode: raw
+        columns: # add column name to YAML dictionary
+          rowid: Sequential number assigned to each item in each transaction.
+          transaction_id: Unique identifier assigned to each transaction.
+          date: Transcription of the date of the transaction.
+          lemay_index: Unique identifier assigned to each person.
+          full_name: Transcription of the name as it appears in the transaction.
+          place: Transcription of any location that appears in the transaction.
+          occupation: Transcription of the occupational information that appears in the transaction.
+          transaction_type: A broad categorization of the transaction.
+          activity: Transcription of the ledger's record of the transaction.
+          controlled_description: Controlled vocabulary categorizing the type of transaction or goods exchanged.
+          narrow_description: Controlled vocabulary categorizing the specific goods and/or services exchanged.
+          pounds: Transcription of the pounds due.
+          shillings: Transcription of the shillings due.
+          pence: Transcription of the pence due.
+          line_total: The total number of pounds, shillings and pence due.
+          post_location: Location associated with the postal transaction.
+          post_weight: Weight of postal transaction.
+          gazette_no: Number of the Pennsylvania Gazette in which the advertisement purchased in the transaction appeared.
+          notes: Transcription of any other information in the transaction.
+          gender: Gender of the person appearing in the transaction, extrapolated from the person's name.
+          transaction_entered_by: 'Person who entered the transaction into the ledger: B for Benjamin Franklin, D for Deborah Franklin.'
+          source: Manuscript volume in which the transaction appears
+          page_number: Digital page number on which the transaction appears.
+          url: Link to a digitization of the page on which the transaction appears.
+          transcriber_notes: Notes, comments and questions from the person who transcribed the record.
+        # facets: #specify in YAML list which facets must always appear
+        #  - full_name
+        #  - date
+      people:
+        title: People
+        label_column: standardized_name # specify label for foreign key
+        description_html: |-
+          <p> The People table provides a way to search for individuals associated with transactions in the database. Based on the <a href="https://udspace.udel.edu/handle/19716/2360" target="_blank">work of Leo Lemay</a>, the Lemay IDs assign a unique identifier to each person. Click on a person's ID in the table to view all their transactions.</p>
+          <p>Note that while care has been taken to disambiguate names as much as possible, it is possible that one ID covers multiple individuals or that two separate IDs refer to the same inividual.</p>
+        searchmode: raw
+        columns:
+          lemay_id: Unique identifier assigned to each person.
+          standardized_name: A standardized version of the person's name.
+          variant_names: All variant spellings and names that occur in the ledgers.
+          gender: Gender of the person, extrapolated from the name.
+      goods_services:
+        title: Goods and Services
+        description_html: |-
+          <p>The Goods and Services table lists all of the broad controlled descriptions used to describe goods and services exchanged in the database. Use this table to search for specific types of items or services that were sold.</p>
+      postal_locations:
+        title: Postal Locations
+        description_html: |-
+          <p>The Postal Locations table allows the user to find all postal transactions from one location.</p>
+      transaction_ids:
+        hidden: true
+#    queries:
+#      books_published_by_bf:
+#        sql: |-
+#          select transaction_id, date, lemay_index, full_name, place, occupation, transaction_type, activity, controlled_description, narrow_description, pounds, shillings, pence, line_total, gender, transaction_entered_by, url
+#          from all_transactions
+#          where controlled_description = "Books and Pamphlets" and narrow_description = "Whitefield" or narrow_description = "Pamela" or narrow_description = "Cato's Distichs" or narrow_description = "Watts's Psalms" or narrow_description = "Watts's Hymns" or narrow_description = "Cato Major" or narrow_description = "Whitefield's Journals"
+#        description: This sample query returns transaction items that include books published by Benjamin Franklin.
+extra_css_urls: # has to be YAML list, even if only one url
+#   - \static\css\core.css
+  - /static/css/custom.css
+#   - \static\css\font-awesome.min.css
+#   - \static\css\fullscreen.css
+#   - \static\css\ie8.css
+#   - \static\css\ie9.css
+#   - \static\css\jquery.fancybox-thumbs.css
+#   - \static\css\jquery.fancybox.min.css
+  - /static/css/main.css
+#   - \static\css\slideshow.css
+#   - \static\css\thumbs.css
+#   - \static\fonts\fontawesome-webfont.eot
+#   - \static\fonts\fontawesome-webfont.svg
+#   - \static\fonts\fontawesome-webfont.ttf
+#   - \static\fonts\fontawesome-webfont.woff
+#   - \static\fonts\fontawesome-webfont.woff2
+#   - \static\fonts\FontAwesome.oft
+  - /static/images/banner-1.jpg
+#   - \static\sass\main.scss
+#   - \static\sass\base\_page.scss
+#   - \static\sass\base\_reset.scss
+#   - \static\sass\base\_typography.scss
+#   - \static\sass\components\_actions.scss
+#   - \static\sass\components\_box.scss
+#   - \static\sass\components\_button.scss
+#   - \static\sass\components\_form.scss
+#   - \static\sass\components\_icon.scss
+#   - \static\sass\components\_icons.scss
+#   - \static\sass\components\_image.scss
+#   - \static\sass\components\_list.scss
+#   - \static\sass\components\_meta.scss
+#   - \static\sass\components\_pagination.scss
+#   - \static\sass\components\_posts.scss
+#   - \static\sass\components\_row.scss
+#   - \static\sass\components\_section.scss
+#   - \static\sass\components\_table.scss
+#   - \static\sass\layout\_banner.scss
+#   - \static\sass\layout\_footer.scss
+#   - \static\sass\layout\_header.scss
+#   - \static\sass\layout\_main.scss
+#   - \static\sass\layout\_navPanel.scss
+#   - \static\sass\libs\_breakpoints.scss
+#   - \static\sass\libs\_functions.scss
+#   - \static\sass\libs\_html-grid.scss
+#   - \static\sass\libs\_mixins.scss
+#   - \static\sass\libs\_vars.scss
+#   - \static\sass\libs\_vendor.scss
+# extra_js_urls:
+#   - \static\js\breakpoints.min.js
+#   - \static\js\browser.min.js
+#   - \static\js\core.js
+#   - \static\js\fullscreen.js
+#   - \static\js\guestures.js
+#   - \static\js\hash.js
+#   - \static\js\jquery.dropotron.min.js
+#   - \static\js\jquery.fancybox-buttons.js
+#   - \static\js\jquery.fancybox-media.js
+#   - \static\js\jquery.fancybox-thumbs.js
+#   - \static\js\jquery.fancybox.js
+#   - \static\js\jquery.fancybox.min.js
+#   - \static\js\jquery.min.js
+#   - \static\js\jquery.scrollex.min.js
+#   - \static\js\jquery.scrolly.min.js
+#   - \static\js\main.js
+#   - \static\js\media.js
+#   - \static\js\skel.min.js
+#   - \static\js\slideshow.js
+#   - \static\js\thumbs.js
+#   - \static\js\util.js

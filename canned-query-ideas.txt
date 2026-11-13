@@ -1,0 +1,61 @@
+James Quest and the rag trade
+
+SELECT * FROM all_transactions WHERE controlled_description = 'Rags' AND lemay_index = 'Q0002';
+https://diglib.amphilsoc.org/franklindata/database/franklin_ledgers_all?sql=select+*+from+all_transactions+where+controlled_description+%3D+%27Rags%27+and+lemay_index+%3D+%27Q0002%27
+
+William Parks and the rag trade
+
+SELECT * FROM all_transactions WHERE controlled_description = 'Rags' AND lemay_index = 'P0039';
+https://diglib.amphilsoc.org/franklindata/database/franklin_ledgers_all?sql=select+*+from+all_transactions+where+controlled_description+%3D+%27Rags%27+and+lemay_index+%3D+%27P0039%27
+
+Deborah Franklin and Thomas Penn
+
+SELECT * FROM all_transactions WHERE lemay_index = 'P0128' AND transaction_entered_by = 'D';
+https://diglib.amphilsoc.org/franklindata/database/franklin_ledgers_all?sql=select+*+from+all_transactions+where+lemay_index+%3D+%27P0128%27+and+transaction_entered_by+%3D+%27D%27
+
+Deborah Franklin and the Governor
+
+SELECT * FROM all_transactions WHERE lemay_index = 'H0033' AND transaction_entered_by = 'D';
+https://diglib.amphilsoc.org/franklindata/database/franklin_ledgers_all?sql=select+*from+all_transactions+where+lemay_index+%3D+%27H0033%27+and+transaction_entered_by+%3D+%27D%27
+
+  - Clarify with Bethany if this is what she means when she says Deb had interactions with the governor.
+
+All transactions entered by Deborah
+
+SELECT * FROM all_transactions WHERE transaction_entered_by = 'D';
+https://diglib.amphilsoc.org/franklindata/database/franklin_ledgers_all?sql=select+*+from+all_transactions+where+transaction_entered_by+%3D+%27D%27
+
+All translations entered by Benjamin
+
+SELECT * FROM all_transactions WHERE transaction_entered_by = 'B';
+https://diglib.amphilsoc.org/franklindata/database/franklin_ledgers_all?sql=select+*+from+all_transactions+where+transaction_entered_by+%3D+%27B%27
+
+All transactions entered by Deborah with women
+
+SELECT * FROM all_transactions WHERE transaction_entered_by = 'D' AND gender = 'F';
+https://diglib.amphilsoc.org/franklindata/database/franklin_ledgers_all?sql=SELECT+*+FROM+all_transactions+WHERE+transaction_entered_by+%3D+%27D%27+AND+gender+%3D+%27F%27%3B
+
+All transactions entered by Benjamin with women
+
+SELECT * FROM all_transactions where transaction_entered_by = 'B' AND gender = 'F';
+https://diglib.amphilsoc.org/franklindata/database/franklin_ledgers_all?sql=SELECT+*+FROM+all_transactions+where+transaction_entered_by+%3D+%27B%27+AND+gender+%3D+%27F%27%3B
+
+All advertisements of enslaved persons
+
+SELECT * FROM all_transactions where controlled_description = 'Advertisement' AND narrow_description LIKE "%Enslavement%";
+https://diglib.amphilsoc.org/franklindata/database/franklin_ledgers_all?sql=SELECT+*+FROM+all_transactions+where+controlled_description+%3D+%27Advertisement%27+AND+narrow_description+LIKE+%22%25Enslavement%25%22%3B
+
+All transactions referencing goods made by forced labor
+
+SELECT * FROM all_transactions where narrow_description LIKE '%Forced Labor%';
+https://diglib.amphilsoc.org/franklindata/database/franklin_ledgers_all?sql=SELECT+*+FROM+all_transactions+where+narrow_description+LIKE+%27%25Forced+Labor%25%27%3B
+
+All advertisements for goods made by forced labor
+
+SELECT * FROM all_transactions where controlled_description = 'Advertisement' AND narrow_description LIKE '%Forced Labor%';
+https://diglib.amphilsoc.org/franklindata/database/franklin_ledgers_all?sql=SELECT+*+FROM+all_transactions+where+controlled_description+%3D+%27Advertisement%27+AND+narrow_description+LIKE+%27%25Forced+Labor%25%27%3B
+
+All transactions that exchange goods made by forced Labor
+
+SELECT * FROM all_transactions where controlled_description != 'Advertisement' AND narrow_description LIKE '%Forced Labor%';
+https://diglib.amphilsoc.org/franklindata/database/franklin_ledgers_all?sql=SELECT+*+FROM+all_transactions+where+controlled_description+%21%3D+%27Advertisement%27+AND+narrow_description+LIKE+%27%25Forced+Labor%25%27%3B
